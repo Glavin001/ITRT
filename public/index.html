@@ -1,70 +1,65 @@
 <html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <style>
+        input.time-picker[type="number"].form-control {
+            padding-right: 5px;
+            width: 3em;
+            padding-left: 5px;
+        }
+    </style>
+
 </head>
 
 <body>
-    <h1>Is That Room Taken?</h1>
 
-    <div class="row">
-        <div class="col-md-6">
-            <h2>Available</h2>
-            <ul class="available">
-            </ul>
+    <div class="container">
+
+        <h1>Is That Room Taken?</h1>
+
+        <form class="form-inline">
+
+            <div class="form-group">
+                <label class="" for="">Date</label>
+                <input id="date-picker" type="date" class="form-control" />
+            </div>
+
+            <div class="form-group">
+                <label class="" for="">Time</label>
+                <div class="input-group">
+
+                    <input class="time-picker form-control" type="number" id="hour-picker" min="0" max="24" step="1" value="0" />
+
+                    <div class="input-group-addon">:</div>
+
+                    <input class="time-picker form-control" type="number" id="minute-picker" min="0" max="60" step="1" value="0" />
+
+                </div>
+            </div>
+        </form>
+
+        <br/>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Available</h2>
+                <ul class="available">
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h2>Unavailable</h2>
+                <ul class="unavailable">
+                </ul>
+            </div>
         </div>
-        <div class="col-md-6">
-            <h2>Unavailable</h2>
-            <ul class="unavailable">
-            </ul>
-        </div>
+
     </div>
 
-    <script>
-        $(document).ready(function() {
-
-            var $available = $('.available');
-
-            $.getJSON('/api/buildings/available')
-                .then(function(results) {
-                    console.log(results);
-                    $available.empty();
-
-                    results.forEach(function(building) {
-                        var $li = $('<li/>').text(building._id);
-                        $available.append($li);
-                    });
-
-                });
-
-
-            var $unavailable = $('.unavailable');
-
-            $.getJSON('/api/buildings/unavailable')
-                .then(function(results) {
-                    console.log(results);
-                    $unavailable.empty();
-
-                    results.forEach(function(building) {
-                        var ac = building.active_courses[0]
-
-                        // FIXME
-                        var msg = '<strong>'+building._id + '</strong> - ' +
-                            ac.subject_id + ' ' + ac.course_id + ' ' + ac.title +
-                            ' from '+ac.begin_time.hours+':'+ac.begin_time.minutes +
-                            ' to ' +ac.end_time.hours+':'+ac.end_time.minutes;
-
-                        var $about = $('<p/>').html(msg);
-                        var $li = $('<li/>').append($about);
-                        $unavailable.append($li);
-                    });
-
-                });
-
-        })
-    </script>
+    <script src="main.js"></script>
 
 </body>
 

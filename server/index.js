@@ -21,7 +21,7 @@ app.get('/api/buildings/stats', function(req, res) {
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
+        // console.log("Connected correctly to server");
 
         var collection = db.collection(coursesCollection);
 
@@ -39,17 +39,18 @@ app.get('/api/buildings/stats', function(req, res) {
     });
 });
 
+app.get('/api/buildings/available/:time', function(req, res) {
 
-app.get('/api/buildings/available', function(req, res) {
+    var time = new Date(parseInt(req.params.time));
 
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
+        // console.log("Connected correctly to server");
 
         var collection = db.collection(coursesCollection);
 
-        buildings.getAvailableRooms(collection, new Date(), function(err,
+        buildings.getAvailableRooms(collection, time, function(err,
             results) {
             // console.log(JSON.stringify(results,
             //     undefined, 4));
@@ -63,16 +64,19 @@ app.get('/api/buildings/available', function(req, res) {
     });
 });
 
-app.get('/api/buildings/unavailable', function(req, res) {
+app.get('/api/buildings/unavailable/:time', function(req, res) {
+
+    var time = new Date(parseInt(req.params.time));
+    // console.log(req.params, time);
 
     // Use connect method to connect to the Server
     MongoClient.connect(url, function(err, db) {
         assert.equal(null, err);
-        console.log("Connected correctly to server");
+        // console.log("Connected correctly to server");
 
         var collection = db.collection(coursesCollection);
 
-        buildings.getUnavailableRooms(collection, new Date(), function(err,
+        buildings.getUnavailableRooms(collection, time, function(err,
             results) {
             // console.log(JSON.stringify(results,
             //     undefined, 4));
